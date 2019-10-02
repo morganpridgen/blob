@@ -9,7 +9,7 @@ void end();
 
 TXL_Display disp;
 TXL_Controller *ctrls[4];
-GameState *state = nullptr;
+GameState *state = new PlayState;
 bool loop = 1;
 
 int main(int argc, char **argv) {

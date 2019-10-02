@@ -10,4 +10,14 @@ class GameState {
     virtual void end() = 0;
 };
 
+class PlayState : public GameState {
+  private:
+    float cX, cY; // replace with other camera control
+  public:
+    virtual bool init();
+    virtual GameState *update(TXL_Controller*[4]);
+    virtual void render();
+    virtual void end();
+};
+
 #endif
