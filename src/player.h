@@ -15,8 +15,11 @@ class Player {
   public:
     bool init();
     void update(TXL_Controller*);
-    void render();
+    void render(float, float);
     void end();
+    void moveCamera(float*, float*);
+    PlayerInfo getInfo() {return info;}
+    void setInfo(PlayerInfo newInfo) {info = newInfo;}
 };
 
 #endif

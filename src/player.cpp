@@ -1,8 +1,10 @@
 #include "player.h"
 #include <TEXEL/texel.h>
+#include <cmath>
 
 bool Player::init() {
   info.x = 0, info.y = 0, info.r = 0, info.tR = 0, info.fVel = 0, info.rVel = 0;
+  return 1;
 }
 
 void Player::update(TXL_Controller *ctrl) {
@@ -21,14 +23,19 @@ void Player::update(TXL_Controller *ctrl) {
   info.x += info.fVel * cos(info.r);
   info.y += info.fVel * sin(info.r);
 }
-void Player::render() {
-  TXL_RenderQuad({info.x, info.y, 8.0f, 8.0f}, {0.15f, 0.85f, 0.15f, 1.0f});
-  TXL_RenderQuad({info.x, info.y, 1.0f, 8.0f}, {0.075f, 0.425f, 0.075f, 1.0f});
-  TXL_RenderQuad({info.x, info.y, 8.0f, 1.0f}, {0.075f, 0.425f, 0.075f, 1.0f});
-  TXL_RenderQuad({info.x + 7.0f, info.y, 1.0f, 8.0f}, {0.075f, 0.425f, 0.075f, 1.0f});
-  TXL_RenderQuad({info.x, info.y + 7.0f, 8.0f, 1.0f}, {0.075f, 0.425f, 0.075f, 1.0f});
+void Player::render(float cX, float cY) {
+  TXL_RenderQuad({info.x - cX, info.y - cY, 8.0f, 8.0f}, {0.15f, 0.85f, 0.15f, 1.0f});
+  TXL_RenderQuad({info.x - cX, info.y - cY, 1.0f, 8.0f}, {0.075f, 0.425f, 0.075f, 1.0f});
+  TXL_RenderQuad({info.x - cX, info.y - cY, 8.0f, 1.0f}, {0.075f, 0.425f, 0.075f, 1.0f});
+  TXL_RenderQuad({info.x + 7.0f - cX, info.y - cY, 1.0f, 8.0f}, {0.075f, 0.425f, 0.075f, 1.0f});
+  TXL_RenderQuad({info.x - cX, info.y + 7.0f - cY, 8.0f, 1.0f}, {0.075f, 0.425f, 0.075f, 1.0f});
 }
 
 void Player::end() {
 
+}
+
+void Player::moveCamera(float *cX, float *cY) {
+  *cX += (info.x - *cX - 320.0f) / 8.0f;
+  *cY += (info.y - *cY - 180.0f) / 8.0f;
 }
