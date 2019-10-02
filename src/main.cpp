@@ -71,6 +71,7 @@ void end() {
     if (ctrls[i]) {
       ctrls[i]->end();
       delete ctrls[i];
+      ctrls[i] = nullptr;
     }
   }
   disp.end();

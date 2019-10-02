@@ -3,11 +3,12 @@
 
 bool PlayState::init() {
   cX = 0, cY = 0;
+  if (!ply.init()) return 0;
+  return 1;
 }
 
 GameState *PlayState::update(TXL_Controller *ctrls[4]) {
-  cX += float(ctrls[0]->leftJoyX()) / 2048.0f;
-  cY += float(ctrls[0]->leftJoyY()) / 2048.0f;
+  ply.update(ctrls[0]);
   return nullptr;
 }
 
@@ -17,8 +18,9 @@ void PlayState::render() {
       TXL_RenderQuad({(i - fmod(cX, 2)) * 16, (j - fmod(cY, 2)) * 16, 16, 16}, {0, fmod(i + j + 4, 2) / 2.0f + 0.5f, 0, 1});
     }
   }
+  ply.render();
 }
 
 void PlayState::end() {
-
+  ply.end();
 }
