@@ -1,2 +1,2 @@
 compilerFlags = "-O2 -ggdb"
-exeName = "bossrush"
+exeName = "blob"

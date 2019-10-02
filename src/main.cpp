@@ -27,10 +27,10 @@ int main(int argc, char **argv) {
 
 bool init() {
   if (!TXL_Init()) return 0;
-  TXL_InitPaths("bossrush");
+  TXL_InitPaths("blob");
   if (!TXL_LoadFont(TXL_DataPath("font.png"))) return 0;
   
-  if (!disp.init("Boss Rush")) return 0;
+  if (!disp.init("Blob")) return 0;
   for (int i = 0; i < 4; i++) {
     ctrls[i] = new TXL_Controller;
     if (!ctrls[i]->init()) {
