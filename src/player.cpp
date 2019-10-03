@@ -24,11 +24,14 @@ void Player::update(TXL_Controller *ctrl) {
   info.y += info.fVel * sin(info.r);
 }
 void Player::render(float cX, float cY) {
-  TXL_RenderQuad({info.x - cX, info.y - cY, 8.0f, 8.0f}, {0.15f, 0.85f, 0.15f, 1.0f});
-  TXL_RenderQuad({info.x - cX, info.y - cY, 1.0f, 8.0f}, {0.075f, 0.425f, 0.075f, 1.0f});
-  TXL_RenderQuad({info.x - cX, info.y - cY, 8.0f, 1.0f}, {0.075f, 0.425f, 0.075f, 1.0f});
-  TXL_RenderQuad({info.x + 7.0f - cX, info.y - cY, 1.0f, 8.0f}, {0.075f, 0.425f, 0.075f, 1.0f});
-  TXL_RenderQuad({info.x - cX, info.y + 7.0f - cY, 8.0f, 1.0f}, {0.075f, 0.425f, 0.075f, 1.0f});
+  TXL_RenderQuad(info.x - cX, info.y - cY, 8.0f, 8.0f, {0.15f, 0.85f, 0.15f, 1.0f});
+  TXL_RenderQuad(info.x - cX - 3.5f, info.y - cY, 1.0f, 8.0f, {0.075f, 0.425f, 0.075f, 1.0f});
+  TXL_RenderQuad(info.x - cX, info.y - cY - 3.5f, 8.0f, 1.0f, {0.075f, 0.425f, 0.075f, 1.0f});
+  TXL_RenderQuad(info.x - cX + 3.5f, info.y - cY, 1.0f, 8.0f, {0.075f, 0.425f, 0.075f, 1.0f});
+  TXL_RenderQuad(info.x - cX, info.y - cY + 3.5f, 8.0f, 1.0f, {0.075f, 0.425f, 0.075f, 1.0f});
+  
+  TXL_RenderQuad(info.x - cX - 1.5f, info.y - cY - 0.5f, 1.0f, 1.0f, {0.075f, 0.425f, 0.075f, 1.0f});
+  TXL_RenderQuad(info.x - cX + 1.5f, info.y - cY - 0.5f, 1.0f, 1.0f, {0.075f, 0.425f, 0.075f, 1.0f});
 }
 
 void Player::end() {
