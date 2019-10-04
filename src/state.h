@@ -2,6 +2,7 @@
 #define stateh
 #include <TEXEL/texel.h>
 #include "player.h"
+#include "level.h"
 
 class GameState {
   public:
@@ -15,6 +16,7 @@ class PlayState : public GameState {
   private:
     float cX, cY; // replace with other camera control
     Player ply;
+    Level lvl;
   public:
     virtual bool init();
     virtual GameState *update(TXL_Controller*[4]);
