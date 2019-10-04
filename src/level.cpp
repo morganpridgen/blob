@@ -29,14 +29,16 @@ void Level::update() {
 void Level::render(float cX, float cY) {
   for (int i = -1; i < 41; i++) {
     for (int j = -1; j < 24; j++) {
-      outerTile->render(i, j, fmod(cX, 16), fmod(cY, 16));
+      int tI = i + int(cX) / 16, tJ = j + int(cY) / 16;
+      if (tI < 0 || tI >= lW || tJ < 0 || tJ >= lH) outerTile->render(i, j, fmod(cX, 16), fmod(cY, 16));
+      else tiles[tI * lH + tJ]->render(tI, tJ, cX, cY);
     }
   }
-  for (int i = 0; i < lW; i++) {
+  /*for (int i = 0; i < lW; i++) {
     for (int j = 0; j < lH; j++) {
       tiles[i * lH + j]->render(i, j, cX, cY);
     }
-  }
+  }*/
 }
 
 void Level::end() {
