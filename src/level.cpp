@@ -8,11 +8,12 @@ bool Level::init(const char *path, Player *ply) {
     tiles = new Tile*[lW * lH];
     for (int i = 0; i < lW; i++) {
       for (int j = 0; j < lH; j++) {
-        tiles[i * lH + j] = new FloorTile;
+        if ((j == 11 && i > 3 && i < 12) || (i == 11 && j > 3 && j < 12)) tiles[i * lH + j] = new WallTile;
+        else tiles[i * lH + j] = new FloorTile;
         if (!tiles[i * lH + j]->init()) return 0;
       }
     }
-    outerTile = new Tile;
+    outerTile = new WallTile;
     if (!outerTile->init()) return 0;
     PlayerInfo pInfo = ply->getInfo();
     pInfo.x = 1.5f * 16.0f, pInfo.y = 1.5f * 16.0f;
@@ -22,8 +23,18 @@ bool Level::init(const char *path, Player *ply) {
   return 0;
 }
 
-void Level::update() {
-
+void Level::update(Player *ply) {
+  for (int i = 0; i < lW; i++) {
+    for (int j = 0; j < lH; j++) {
+      tiles[i * lH + j]->update(i, j, ply);
+    }
+  }
+  PlayerInfo pInfo = ply->getInfo();
+  if (pInfo.x < 0.0f) pInfo.x = 0;
+  if (pInfo.x > 16 * lW) pInfo.x = 16 * lW;
+  if (pInfo.y < 0.0f) pInfo.y = 0;
+  if (pInfo.y > 16 * lW) pInfo.y = 16 * lW;
+  ply->setInfo(pInfo);
 }
 
 void Level::render(float cX, float cY) {
@@ -34,11 +45,6 @@ void Level::render(float cX, float cY) {
       else tiles[tI * lH + tJ]->render(tI, tJ, cX, cY);
     }
   }
-  /*for (int i = 0; i < lW; i++) {
-    for (int j = 0; j < lH; j++) {
-      tiles[i * lH + j]->render(i, j, cX, cY);
-    }
-  }*/
 }
 
 void Level::end() {

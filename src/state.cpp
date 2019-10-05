@@ -12,7 +12,7 @@ bool PlayState::init() {
 GameState *PlayState::update(TXL_Controller *ctrls[4]) {
   ply.update(ctrls[0]);
   ply.moveCamera(&cX, &cY);
-  lvl.update();
+  lvl.update(&ply);
   return nullptr;
 }
 

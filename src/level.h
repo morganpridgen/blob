@@ -10,7 +10,7 @@ class Level {
     int lW, lH;
   public:
     bool init(const char*, Player*);
-    void update();
+    void update(Player*);
     void render(float, float);
     void end();
 };
