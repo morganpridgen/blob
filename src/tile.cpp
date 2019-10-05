@@ -12,11 +12,21 @@ void WallTile::update(int tX, int tY, Player *ply) {
   float rX = float(tX) * 16.0f + 8.0f, rY = float(tY) * 16.0f + 8.0f;
   float pX = ply->getInfo().x, pY = ply->getInfo().y;
   if ((rX - pX > -8.0f && rX - pX < 8.0f) && (rY - pY > -8.0f && rY - pY < 8.0f)) {
-    float d = sqrt((pX - rX) * (pX - rX) + (pY - rY) * (pY - rY));
-    pX += (8.0f * sqrt(2) - d) * cos(atan2(pY - rY, pX - rX));
-    pY += (8.0f * sqrt(2) - d) * sin(atan2(pY - rY, pX - rX));
+    /*float d = 8.0f * sqrt(2) - sqrt((pX - rX) * (pX - rX) + (pY - rY) * (pY - rY));
+    pX += d * cos(atan2(pY - rY, pX - rX));
+    pY += d * sin(atan2(pY - rY, pX - rX));*/
+    float pXV = ply->getInfo().fVel * cos(ply->getInfo().r);
+    float pYV = ply->getInfo().fVel * sin(ply->getInfo().r);
+    if (rX - (pX - pXV) <= -8.0f || rX - (pX - pXV) >= 8.0f) {
+      pX -= pXV;
+      pXV = 0;
+    }
+    if (rY - (pY - pYV) <= -8.0f || rY - (pY - pYV) >= 8.0f) {
+      pY -= pYV;
+      pYV = 0;
+    }
     PlayerInfo pInfo = ply->getInfo();
-    pInfo.x = pX, pInfo.y = pY;
+    pInfo.x = pX, pInfo.y = pY, pInfo.r = atan2(pYV, pXV), pInfo.fVel = sqrt(pXV * pXV + pYV * pYV);
     ply->setInfo(pInfo);
   }
 }
