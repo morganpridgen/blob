@@ -26,4 +26,6 @@ class WallTile : public Tile {
     virtual int getType() {return 1;}
 };
 
+Tile *newTileId(int);
+
 #endif

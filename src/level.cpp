@@ -1,5 +1,25 @@
 #include "level.h"
+#include <cstring>
 #include <TEXEL/texel.h>
+#include "tile.h"
+
+int nextInt(TXL_File *f) {
+  int out = 0;
+  char tmp = 0;
+  bool readNum = 0;
+  while (1) {
+    if (!f->read(&tmp, sizeof(tmp))) {
+      if (readNum) return out;
+      else return -1;
+    }
+    if (tmp >= '0' && tmp <= '9') readNum = 1;
+    else if (readNum) return out;
+    if (readNum) {
+      out *= 10;
+      out += tmp - '0';
+    }
+  }
+}
 
 bool Level::init(const char *path, Player *ply) {
   lW = 0, lH = 0;
@@ -18,6 +38,29 @@ bool Level::init(const char *path, Player *ply) {
     PlayerInfo pInfo = ply->getInfo();
     pInfo.x = 1.5f * 16.0f, pInfo.y = 1.5f * 16.0f;
     ply->setInfo(pInfo);
+    return 1;
+  } else {
+    TXL_File file;
+    char newPath[256];
+    sprintf(newPath, "%s/%s/terrain.txt", TXL_DataPath("levels"), path);
+    if (!file.init(newPath, 'r')) return 0;
+    lW = nextInt(&file), lH = nextInt(&file);
+    tiles = new Tile*[lW * lH];
+    int *tIds = new int[lW * lH];
+    for (int i = 0; i < lW * lH; i++) tIds[i] = nextInt(&file);
+    for (int i = 0; i < lW; i++) {
+      for (int j = 0; j < lH; j++) {
+        tiles[i * lH + j] = newTileId(tIds[j * lH * (lW / lH) + i]);
+      }
+    }
+    outerTile = new WallTile;
+    if (!outerTile->init()) return 0;
+    PlayerInfo pInfo = ply->getInfo();
+    pInfo.x = (float(nextInt(&file)) + 0.5f) * 16.0f;
+    pInfo.y = (float(nextInt(&file)) + 0.5f) * 16.0f;
+    printf("%.2f %.2f\n", pInfo.x, pInfo.y);
+    ply->setInfo(pInfo);
+    file.close();
     return 1;
   }
   return 0;

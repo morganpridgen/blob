@@ -11,10 +11,7 @@ void FloorTile::render(int tX, int tY, float cX, float cY) {
 void WallTile::update(int tX, int tY, Player *ply) {
   float rX = float(tX) * 16.0f + 8.0f, rY = float(tY) * 16.0f + 8.0f;
   float pX = ply->getInfo().x, pY = ply->getInfo().y;
-  if ((rX - pX > -8.0f && rX - pX < 8.0f) && (rY - pY > -8.0f && rY - pY < 8.0f)) {
-    /*float d = 8.0f * sqrt(2) - sqrt((pX - rX) * (pX - rX) + (pY - rY) * (pY - rY));
-    pX += d * cos(atan2(pY - rY, pX - rX));
-    pY += d * sin(atan2(pY - rY, pX - rX));*/
+  if ((rX - pX >= -8.0f && rX - pX <= 8.0f) && (rY - pY >= -8.0f && rY - pY <= 8.0f)) {
     float pXV = ply->getInfo().fVel * cos(ply->getInfo().r);
     float pYV = ply->getInfo().fVel * sin(ply->getInfo().r);
     if (rX - (pX - pXV) <= -8.0f || rX - (pX - pXV) >= 8.0f) {
@@ -34,4 +31,22 @@ void WallTile::update(int tX, int tY, Player *ply) {
 void WallTile::render(int tX, int tY, float cX, float cY) {
   TXL_RenderQuad({float(tX) * 16.0f - cX, float(tY) * 16.0f - cY, 16, 16}, {0.5f, 0.5f, 0.5f, 1.0f});
   TXL_RenderQuad({float(tX) * 16.0f - cX + 2, float(tY) * 16.0f - cY + 2, 12, 12}, {0.25f, 0.25f, 0.25f, 1.0f});
+}
+
+
+
+Tile *newTileId(int tId) {
+  Tile *out = nullptr;
+  switch (tId) {
+    case 0:
+      out = new FloorTile;
+      break;
+    case 1:
+      out = new WallTile;
+      break;
+    default:
+      out = new Tile;
+      break;
+  }
+  return out;
 }

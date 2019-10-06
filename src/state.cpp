@@ -5,7 +5,7 @@
 bool PlayState::init() {
   cX = 0, cY = 0;
   if (!ply.init()) return 0;
-  if (!lvl.init(nullptr, &ply)) return 0;
+  if (!lvl.init("test", &ply)) return 0;
   return 1;
 }
 
